@@ -27,4 +27,12 @@ public class MyImageButton extends androidx.appcompat.widget.AppCompatImageButto
     public void setRight(boolean right) {
         this.right = right;
     }
+
+    public boolean isClicked() {
+        return clicked;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
 }

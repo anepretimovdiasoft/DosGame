@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,11 +35,13 @@ public class GameFragment extends Fragment {
                 cards[i][j].setImageDrawable(
                         AppCompatResources.getDrawable(
                                 getActivity(),
-                                R.drawable.ic_launcher_background)
+                                R.drawable.notright)
                 );
+                cards[i][j].setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
         }
 
+        initCardFirstPattern();
 
         return view;
     }
@@ -60,5 +63,45 @@ public class GameFragment extends Fragment {
             }
         }
     }
+
+    public boolean checkResult(){
+        for (int i = 0; i < cards.length; i++) {
+            for (int j = 0; j < cards[i].length; j++) {
+                if (cards[i][j].isRight() && cards[i][j].isClicked() ||  !cards[i][j].isRight() && !cards[i][j].isClicked()) return false;
+            }
+        }
+        return true;
+    }
+
+    private void initCardFirstPattern(){
+        cards[0][1].setImageDrawable(
+                AppCompatResources.getDrawable(
+                        getActivity(),
+                        R.drawable.right)
+        );
+        cards[0][1].setRight(true);
+
+        cards[2][4].setImageDrawable(
+                AppCompatResources.getDrawable(
+                        getActivity(),
+                        R.drawable.right)
+        );
+        cards[2][4].setRight(true);
+
+        cards[1][1].setImageDrawable(
+                AppCompatResources.getDrawable(
+                        getActivity(),
+                        R.drawable.right)
+        );
+        cards[1][1].setRight(true);
+
+        cards[3][5].setImageDrawable(
+                AppCompatResources.getDrawable(
+                        getActivity(),
+                        R.drawable.right)
+        );
+        cards[3][5].setRight(true);
+    }
+
 }
 

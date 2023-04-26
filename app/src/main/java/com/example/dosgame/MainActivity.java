@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 import com.example.dosgame.fragment.GameFragment;
 import com.example.dosgame.fragment.MenuFragment;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean inGame;
 
     private MaterialButton btnRestart;
+    private MaterialButton btnCheck;
 
     private Chronometer chronometer;
 
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         gameFragment = (GameFragment) getSupportFragmentManager().getFragments().get(0);
 
-        chronometer = findViewById(R.id.tv_time);
+        chronometer = findViewById(R.id.ch_time);
         chronometer.start();
 
 
@@ -66,8 +68,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                chronometer.stop();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
 
                 gameFragment.reset();
+            }
+        });
+
+        btnCheck = findViewById(R.id.btn_check);
+        btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (gameFragment.checkResult()) {
+                    Toast.makeText(MainActivity.this, "WIN WITH TIME : " + chronometer.getText(), Toast.LENGTH_SHORT).show();
+                    chronometer.stop();
+                }
+                else
+                    Toast.makeText(MainActivity.this, "LOSE", Toast.LENGTH_SHORT).show();
             }
         });
 
