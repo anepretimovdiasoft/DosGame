@@ -3,6 +3,7 @@ package com.example.dosgame;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -20,15 +21,22 @@ public class MainActivity extends AppCompatActivity {
     private GameFragment gameFragment;
     private boolean inGame;
 
+    private MediaPlayer mediaPlayer;
+
     private MaterialButton btnRestart;
     private MaterialButton btnCheck;
 
     private Chronometer chronometer;
 
+    private boolean enabledMusic = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         menuFragment = new MenuFragment();
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.test);
+        mediaPlayer.setLooping(true);
 
         inGame = true;
 
@@ -83,13 +91,33 @@ public class MainActivity extends AppCompatActivity {
                 if (gameFragment.checkResult()) {
                     Toast.makeText(MainActivity.this, "WIN WITH TIME : " + chronometer.getText(), Toast.LENGTH_SHORT).show();
                     chronometer.stop();
-                }
-                else
+                } else
                     Toast.makeText(MainActivity.this, "LOSE", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (enabledMusic) startMusic();
+    }
 
+    private void startMusic() {
+        if (mediaPlayer != null) mediaPlayer.start();
+    }
+
+    public void stopMusic() {
+        if (mediaPlayer != null) mediaPlayer.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }
